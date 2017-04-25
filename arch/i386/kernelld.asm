@@ -10,7 +10,7 @@ global begin
 extern kmain
 
 extern setgdt
-global gdt_flush
+global gdt_load
 extern gp
 
 extern setup_paging
@@ -28,8 +28,6 @@ section .data
 
 begin:
   push ebx
-
-  cli
 
   mov edx, 0x5000     ;x bytes are gonna get zero'd
   mov ecx, 0x00600000   ;at address 0x00000000
@@ -84,7 +82,7 @@ cr3load:
   ret
 
 
-gdt_flush:            ;enables GDT
+gdt_load:            ;enables GDT
     lgdt [gp+2]       ;pointer to structure + 2 because of padding (16 bit)
     mov eax,0x10			;pointer to the data segment
     mov ds,eax
@@ -104,9 +102,7 @@ zero_page:
   jne zero_page
   ret
 
-done:
-  ret
-
 section .bss
 stack:
+resb 0x1000
 stack_end:

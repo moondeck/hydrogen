@@ -65,7 +65,7 @@ void gdt_install() {
   _add_gdt_entry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
   _add_gdt_entry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
 
-  gdt_flush();
+  gdt_load();
 }
 
 void memory_init(multiboot_info_t* mbd) {

@@ -1,21 +1,21 @@
 #include <libc/libc.h>
 
-uint32_t memcpy(uint8_t *src,uint8_t *dest,uint32_t length) {
+uint32_t memcpy(void *src, uint8_t *dest, size_t length) {
   uint32_t count = 0;
+  uint8_t *src_ptr = src;
   for (count = 0; count != length; count++) {
-    *dest = *src;
-    src++;
+    *dest = *src_ptr;
+    src_ptr++;
     dest++;
   }
   return 0;
 }
 
-uint32_t memset(uint8_t *dest, uint8_t val,
-           uint32_t count) {  // mset function, sets count addresses starting from
-                         // *dest to val
+uint32_t memset(void *dest, uint8_t val, size_t count) {
+  uint8_t *dest_ptr = dest;
   for (uint32_t counter = 0; counter != count; counter++) {
-    *dest = (unsigned char)val;
-    dest++;
+    *dest_ptr = (unsigned char)val;
+    dest_ptr++;
   }
   return 0;
 }

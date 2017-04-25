@@ -20,26 +20,23 @@ struct idt_ptr {
 struct idt_entry idt[256];
 struct idt_ptr idtp;
 
-void idt_isr_gate(uint8_t interrupt, uint8_t flags, uint8_t selector, uint32_t address){
+void idt_isr_gate(uint8_t interrupt, uint8_t flags, uint8_t selector, uint32_t address) {
   idt[interrupt].base_low = address;
   idt[interrupt].base_high = (address >> 16);
 
   idt[interrupt].sel = selector;
 
   idt[interrupt].flags = (flags << 4) | 0b00001110;
-
 }
 
-void idt_install(){
-
+void idt_install() {
   idtp.base = (uint32_t) &idt;
   idtp.size = sizeof(idt);
 
-  idt_isr_gate(0x0E,0b1000,0x08,(uint32_t) &exception_0x0E);
-  idt_isr_gate(0x20,0b1000,0x08,(uint32_t) &interrupt_0x20);
-  idt_isr_gate(0x21,0b1000,0x08,(uint32_t) &interrupt_0x21);
-  idt_isr_gate(0x24,0b1000,0x08,(uint32_t) &interrupt_0x24);
+  idt_isr_gate(0x0E, 0b1000, 0x08,(uint32_t) &exception_0x0E);
+  idt_isr_gate(0x20, 0b1000, 0x08,(uint32_t) &interrupt_0x20);
+  idt_isr_gate(0x21, 0b1000, 0x08,(uint32_t) &interrupt_0x21);
+  idt_isr_gate(0x24, 0b1000, 0x08,(uint32_t) &interrupt_0x24);
 
   idt_load();
-
 }

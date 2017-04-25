@@ -19,7 +19,7 @@ extern uint32_t firstpf;
 void gdt_install();
 void gdt_set_gate(int num, unsigned long base, unsigned long limit,
                   unsigned char access, unsigned char gran);
-extern void gdt_flush();
+extern void gdt_load();
 void memory_init(multiboot_info_t *mbd);
 uint32_t pfa_init();
 uint32_t pfa_pop();
