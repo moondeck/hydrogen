@@ -160,5 +160,6 @@ pfptr_t alloc_pframe() {
 }
 
 pfptr_t dealloc_pframe(pfptr_t pframe_address) {
+  kprintf("pushing page frame with addr: %x\n",(uint32_t) pframe_address);
   return pfa_push(pframe_address);
 }

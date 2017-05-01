@@ -5,13 +5,13 @@
  */
 
 extern int get_hileaf();
+extern uint32_t _IRQ_TICK;
 
 void kmain(multiboot_info_t *mbd_ptr) {
 
   gdt_install();
   remap_PIC(0x20, 0x28);
   idt_install();
-  PIC1_mask_irq(1);
 
   initkbd();
   init_serial();
@@ -23,8 +23,9 @@ void kmain(multiboot_info_t *mbd_ptr) {
   pfa_init();
   
   init_paging();
-
+  
   while (1) {
+    //kprintf("irq ticks: %d\n", _IRQ_TICK);
     brk();
   }
 

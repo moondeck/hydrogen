@@ -36,13 +36,13 @@ exception_0x00:	;division by 0
 	iret
 
 exception_0x0E:	;page fault
-	pusha
+	pushad
 	cld
 
-	mov ecx,cr2
 	call page_fault
 
 	popa
+	add esp, 4
 	iret
 
 ;interrupts go here

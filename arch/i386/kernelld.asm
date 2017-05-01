@@ -27,6 +27,7 @@ section .data
 
 
 begin:
+  mov esp, stack_end
   push ebx
 
   mov edx, 0x5000     ;x bytes are gonna get zero'd
@@ -90,9 +91,9 @@ gdt_load:            ;enables GDT
     mov fs,eax
     mov gs,eax
     mov ss,eax
-    jmp 0x08:flush2		;far jump to the code segment, changes CS pointer
+    jmp 0x08:cschange		;far jump to the code segment, changes CS pointer
 
-flush2:
+cschange:
     ret
 
 zero_page:
@@ -104,5 +105,5 @@ zero_page:
 
 section .bss
 stack:
-resb 0x1000
+resb 0xF000
 stack_end:

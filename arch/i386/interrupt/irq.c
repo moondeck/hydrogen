@@ -1,12 +1,15 @@
 #include <arch/i386/io/kernelio.h>
 #include <arch/i386/console/serial.h>
 #include <arch/i386/interrupt/irq.h>
+#include <arch/i386/vmm/vmm.h>
 
 #define PIC_A 0x20
 #define PIC_B 0xA0
 #define PIC_A_DATA 0x21
 #define PIC_B_DATA 0xA1
 #define PIC_ENDOFINT 0x20
+
+uint32_t _IRQ_TICK;
 
 void remap_PIC(char offset, char offset2) {
   unsigned char mask1;
@@ -44,7 +47,7 @@ void PIC2_mask_irq(unsigned irq_mask) {
 void div_by_0(void) { panic("division by 0"); }
 
 void pit_isr(void) {
-  //kout("PIT interrupt\n");
+  _IRQ_TICK++;
   outb(PIC_A, PIC_ENDOFINT);
 }
 
@@ -60,5 +63,9 @@ void com1_isr(void) {
 }
 
 void page_fault(void) {
-  panic("Yep, that's a page fault!");
+  volatile uint32_t cr2_value;
+  asm("movl %%cr2, %0" : "=r" (cr2_value));
+  kprintf("cr2 value: %x\n", cr2_value);
+  map_pv(cr2_value, alloc_pframe(), PFLAG_READWR);
+  kprintf("page fault, allocating\n");
 }

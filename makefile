@@ -6,11 +6,11 @@ LD = i686-elf-ld
 
 CFLAGS = -ffreestanding -Wall -Wextra -g
 
-kernel_x86 : kernelloader.o irqasm.o hwdetectasm.o vmmasm.o serial.o kernelio.o idt.o memory.o irq.o kbd.o io.o vmm.o hwdetect.o kprintf.o libc.o kernel.o ata.o
+kernel_x86 : kernelloader.o irqasm.o hwdetectasm.o vmmasm.o serial.o kernelio.o idt.o memory.o irq.o kbd.o io.o vmm.o hwdetect.o kprintf.o libc.o kernel.o ata.o kmalloc.o
 	@echo "[ LINK ]" $@
 	@$(CC) -g -nostdlib -T arch/i386/kernel.ld -o hydrogen kernelloader.o kernel.o irqasm.o idt.o \
 	kbd.o memory.o serial.o irq.o kernelio.o io.o vmm.o vmmasm.o hwdetect.o hwdetectasm.o ata.o \
-	libc.o kprintf.o -lgcc
+	libc.o kprintf.o kmalloc.o -lgcc
 
 kernelloader.o :
 	@$(AS) -f elf32 arch/i386/kernelld.asm 											-o kernelloader.o
@@ -46,6 +46,8 @@ kprintf.o :
 	@$(CC)	$(CFLAGS) -c kernel/libc/kprintf.c									-I include			-o kprintf.o
 libc.o :
 	@$(CC)	$(CFLAGS) -c kernel/libc/libc.c 										-I include			-o libc.o
+kmalloc.o :
+	@$(CC)	$(CFLAGS) -c kernel/kmalloc/kmalloc.c 										-I include			-o kmalloc.o
 kernel.o :
 	@$(CC)	$(CFLAGS) -c arch/i386/kernel.c 										-I include			-o kernel.o
 

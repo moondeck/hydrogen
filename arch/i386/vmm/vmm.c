@@ -9,6 +9,8 @@
 static uint32_t *page_dir = (uint32_t *) PDIR_PHYS;
 static uint32_t * const page_tab = (uint32_t*)0xFFC00000;
 
+
+
 uint32_t get_virt_mapoffset(uint32_t PDIR_index) {
     return PSTRUCTURE_VIRT + (PDIR_index * 0x1000);
 }
@@ -38,9 +40,10 @@ uint32_t unmap_pv(uint32_t virt) {
     uint32_t pd_index = (virt >> 22);
     uint32_t pt_index = (virt >> 12);
 
+    dealloc_pframe(page_tab[pt_index] & 0xFFFFF000);
     page_tab[pt_index] = 0; //un-present
     invlpg(virt);   //invalidate tlb
-    load_cr3((uint32_t) PDIR_PHYS); //reload cr3
+    load_cr3((uint32_t) PDIR_PHYS);
 
     return 0;
 }
