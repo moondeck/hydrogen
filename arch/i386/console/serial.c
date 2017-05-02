@@ -1,5 +1,4 @@
 #include <arch/i386/console/serial.h>
-#include <arch/i386/io/io.h>
 
 void init_serial() {
   outb(COMPORT + 1, 0x00);
@@ -22,24 +21,36 @@ char serial_io_wait() {
   return 1;
 }
 
-void kout_char(char koutchar) {  // outputs a character to serial
-  serial_io_wait();
-  outb(COM1, koutchar);
+uint8_t vga_en = 1;
+
+uint8_t kout_char(char koutchar) {  // outputs a character to serial
+  if (vga_en == 1) {
+    legacy_vga_print(koutchar, 0x0F);
+    return 0;
+  } else {
+    serial_io_wait();
+    outb(COM1, koutchar);
+    return 0;
+  }
 }
 
-void kout(char *koutstring) {  // outputs a string (char array) to serial
+uint8_t kout(char *koutstring) {  // outputs a string (char array) to serial
 
   while (*koutstring != 0) {
 
       if (*koutstring == '\n') {
-        kout_char('\r');
-        kout_char('\n');
-        koutstring++;
+        if(vga_en == 1) {
+          legacy_vga_newline();
+        } else {
+          kout_char('\r');
+          kout_char('\n');
+        }
+        *koutstring++;
 
       } else {
         kout_char(*koutstring);
-        __asm__("movl %eax,%eax");
-        koutstring++;
+        *koutstring++;
       }
   }
+  return 0;
 }

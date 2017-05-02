@@ -9,6 +9,7 @@ extern uint32_t _IRQ_TICK;
 
 void kmain(multiboot_info_t *mbd_ptr) {
 
+  legacy_vga_clear();
   gdt_install();
   remap_PIC(0x20, 0x28);
   idt_install();

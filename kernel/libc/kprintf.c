@@ -37,8 +37,8 @@ int kprintf(const char *format, ... ) {
         } else {
 
             if(*format == '\n') {
-                kout_char('\r');
-                kout_char('\n');
+                kout("\n");
+
                 format++;
 
             } else {
