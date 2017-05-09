@@ -23,14 +23,16 @@ void legacy_vga_newline(void) {
 }
 
 void legacy_vga_print(uint8_t vga_character, uint8_t vga_color) {
+
+    if (y_pos == 25) {
+           memcpy((0xb8000 + (80 * 5 * sizeof(screen_t))), 0xb8000, (80 * 20 * sizeof(screen_t)));
+           memset((0xb8000 + (80 * 20 * sizeof(screen_t))), 0, (80 * 5 * sizeof(screen_t)));
+    }
+    
     screen[(y_pos * 80) + x_pos].character = vga_character;
     screen[(y_pos * 80) + x_pos].color = vga_color;
     x_pos++;
-
     if (x_pos == 80) {
         legacy_vga_newline();
-        if (y_pos == 25) {
-           legacy_vga_clear(); 
-        }
     }
 }

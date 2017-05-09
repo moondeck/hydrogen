@@ -21,7 +21,7 @@ char serial_io_wait() {
   return 1;
 }
 
-uint8_t vga_en = 1;
+uint8_t vga_en = 0;
 
 uint8_t kout_char(char koutchar) {  // outputs a character to serial
   if (vga_en == 1) {

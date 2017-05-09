@@ -7,8 +7,7 @@
 /*
  * kernel I/O library
  */
-
-#define version 201702
+char *version = "201705";
 
 void bootmsg(multiboot_info_t* mbd) {  // boot message and some info
 

@@ -24,9 +24,9 @@ void kmain(multiboot_info_t *mbd_ptr) {
   pfa_init();
   
   init_paging();
-  
+
   while (1) {
-    //kprintf("irq ticks: %d\n", _IRQ_TICK);
+    kprintf("irq ticks: %d\n", _IRQ_TICK);
     brk();
   }
 
