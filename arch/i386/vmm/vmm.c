@@ -62,3 +62,8 @@ void init_paging(void) {
 inline void invlpg(uint32_t addr) {
    asm volatile("invlpg (%0)" ::"r" (addr) : "memory");
 }
+
+uint32_t alloc_page(uint32_t alloc_addr) {
+    map_pv(alloc_addr, alloc_pframe(), PFLAG_READWR);
+    return 0;
+}

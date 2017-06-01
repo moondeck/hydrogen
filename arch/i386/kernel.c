@@ -25,8 +25,12 @@ void kmain(multiboot_info_t *mbd_ptr) {
   
   init_paging();
 
+  malloc_init();
+  kprintf("Dynamic memory enabled\n");
+
+
+
   while (1) {
-    kprintf("irq ticks: %d\n", _IRQ_TICK);
     brk();
   }
 

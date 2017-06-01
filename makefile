@@ -61,3 +61,6 @@ install:
 
 loc:
 	git ls-files | xargs cloc
+
+gtags:
+	gtags
